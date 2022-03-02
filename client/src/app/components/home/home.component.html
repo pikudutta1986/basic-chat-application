@@ -1,0 +1,53 @@
+<div class="container">
+  <div class="messaging">
+    <div class="inbox_msg">
+      <div class="mesgs" *ngIf="roomJoined" [ngStyle]="chatContainerStyle">
+        <div id="globalmessage" *ngIf="globalMessage != ''" [innerHTML]="globalMessage"></div>
+        <div [ngStyle]="chatboxStyle" class="msg_history">
+          <div class="repeater" *ngFor="let item of chatData">
+            <div class="incoming_msg" *ngIf="item.socket_id != localSocketId">
+              <div class="incoming_msg_img"> 
+                <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil">
+              </div>
+              <div class="received_msg">
+                <strong>{{item.name}}</strong>
+                <div class="received_withd_msg">
+                  <p>{{item.message_text}}</p>
+                </div>
+              </div>
+            </div>
+            <div class="outgoing_msg" *ngIf="item.socket_id == localSocketId">
+              <div class="sent_msg">
+                <p>{{item.message_text}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="type_msg">
+          <div class="input_msg_write">
+            <form name="chatForm" class="chatForm" [formGroup]="chatForm">
+              <input type="text" (keyup.enter)="SendChatMessage()" class="write_msg" placeholder="Type a message" formControlName="message_text" />
+              <button class="msg_send_btn" type="button" (click)="SendChatMessage()"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="namebox" class="mesgs" *ngIf="!roomJoined">
+        <form name="loginForm" class="loginForm" [formGroup]="loginForm">
+          <h3 class="text-center">Type your name to join room</h3>
+          <div class="text-center"><input type="text" class="" formControlName="name" /></div>
+          <div class="text-center errorbox">
+            <label *ngIf="loginForm.controls['name'].hasError('required') &&
+            loginForm.controls['name'].touched">
+            Name is required
+          </label>
+        </div>
+        <div class="text-center mt-20">
+          <button class="k-primary" (click)="SetNameAndJoinRoom()">Join Chat Room</button>
+        </div>
+      </form>
+    </div>
+
+  </div>
+</div>
+</div>
